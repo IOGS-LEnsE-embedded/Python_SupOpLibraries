@@ -77,6 +77,13 @@ class MyWindow(QMainWindow):
             self.data = self.serNuc.read(1)
             self.lenseLabel.setText(f"Switch Off Led ({self.data})")
 
+    def closeApp(self):
+        self.close()
+        self.closeEvent(None)
+        
+    def closeEvent(self, event):
+        QApplication.quit()
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
