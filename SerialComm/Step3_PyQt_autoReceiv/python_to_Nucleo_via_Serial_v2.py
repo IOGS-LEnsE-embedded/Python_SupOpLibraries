@@ -22,32 +22,38 @@ from PyQt5.QtWidgets import (
 from PyQt5.uic import loadUi
 
 
-class PerpetualTimer():
+class RepeatTimer(Timer):  
+    """
+    Create Timer that repeats action at a specific time interval.
+    Based on threading.Timer class
 
-    def __init__(self, t, hFunction):
-        self.started = 0
-        self.t = t
-        self.hFunction = hFunction
-        self.thread = Timer(self.t, self.handle_function)
+    my_timer = RepeatTimer(time, function) 
 
-    def handle_function(self):
-        self.hFunction()
-        if(self.started == 1):
-            self.thread = Timer(self.t, self.handle_function)
-            self.thread.start()
+    ...
+    
+    Methods
+    -------
+    run():
+        Executes a specific function when time is reached.
+    """
+    
+    def run(self):  
+        '''
+        Executes a specific function when time is reached.
 
-    def start(self):
-        self.started = 1
-        self.thread.start()
+        Returns
+        -------
+        None.
 
-    def stop(self):
-        self.started = 0
-        self.thread.join()
-        
-    def setTime(self, t):
-        self.t = t        
+        '''
+        while not self.finished.wait(self.interval):  
+            self.function(*self.args,**self.kwargs)   
+
+
 
 class MyWindow(QMainWindow):
+    """
+    """
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -68,11 +74,12 @@ class MyWindow(QMainWindow):
         # To create an empty serial connection
         self.serNuc = Serial()
         self.connected = 0
-        self.tikTimer = PerpetualTimer(0.5, self.getSerialData)
-        self.tikTimer.start()
+        self.timer = RepeatTimer(0.5, self.getSerialData)  
+        self.timer.start() #recalling run  
             
     def __del__(self):
         self.serNuc.close()
+        self.timer.cancel()
     
     def connectToNucleo(self):
         if(self.connected == 0):
@@ -85,6 +92,8 @@ class MyWindow(QMainWindow):
             self.lenseLabel.setText(f"Connected to {self.selectPort}")
             
     def quitApp(self):
+        self.timer.cancel()
+        self.connected = 0
         self.serNuc.close()
         self.close()
         
@@ -112,6 +121,16 @@ class MyWindow(QMainWindow):
                 print(str(data_cnt))
                 self.data = self.serNuc.read(data_cnt)
                 self.lenseLabel.setText(f"DATA {data_cnt}")
+
+    def closeApp(self):
+        self.timer.cancel()
+        self.connected = 0
+        self.close()
+        self.closeEvent(None)
+        
+    def closeEvent(self, event):
+        self.timer.cancel()
+        QApplication.quit()
 
 
 if __name__ == "__main__":
