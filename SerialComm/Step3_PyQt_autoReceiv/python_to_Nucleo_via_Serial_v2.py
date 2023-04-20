@@ -53,6 +53,60 @@ class RepeatTimer(Timer):
 
 class MyWindow(QMainWindow):
     """
+    Create a simple GUI for serial communication with a Nucleo Board.
+    The GUI is based on PyQt5.
+    Tested on Nucleo-L476RG.
+    @see : https://github.com/IOGS-LEnsE-embedded/Python_SupOpLibraries/blob/main/SerialComm/Step1_script/main_L476RG_Nucleo_prog.cpp
+
+    This class requires the Python_to_Nucleo_ihm_v1.ui file,
+    designed with QtDesigner.
+    @see : https://github.com/IOGS-LEnsE-embedded/Python_SupOpLibraries/blob/main/SerialComm/Step2_PyQt_send/Python_to_Nucleo_ihm_v1.ui
+    
+    ...
+
+    Attributes
+    ----------
+    ports : tuple[str]
+        list of the serial ports
+    comPortList : QComboBox
+        graphical list object to display serial ports list
+    connectBt : QButton
+        graphical button object linked to the Nucleo connection function
+        called connectToNucleo
+    appQuitBt : QButton
+        graphical button object to close the application, linked to
+        quitApp function
+    ledOnBt : QButton
+        graphical button object to switch on the led on the Nucleo board
+        linked to switchOnLed function    
+    ledOffBt : QButton
+        graphical button object to switch off the led on the Nucleo board
+        linked to switchOffLed function   
+    serNuc : Serial
+        serial connection to the Nucleo board @115200 bauds
+    connected : int
+        flag to know if board is connected
+    timer : RepeatTimer 
+        timer object to test Board reception each 100 ms  
+    
+    
+    Methods
+    -------
+    __init__(parent=None):
+        Construct the GUI object.
+    __del__():
+        Destroy the GUI object.
+    connectToNucleo():
+        Connect GUI to the Nucleo board.    
+    quitApp():
+        Quit the GUI application.
+    switchOnLed():
+        Send command to switch on the LED on the Nucleo board.
+    switchOffLed():
+        Send command to switch off the LED on the Nucleo board.
+    getSerialData():
+        Get data from the Nucleo board, if any.
+    
     """
 
     def __init__(self, parent=None):
