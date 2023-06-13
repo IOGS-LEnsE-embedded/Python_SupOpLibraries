@@ -55,6 +55,7 @@ class MainWindow(QMainWindow):
         self.camera = None 
         self.max_width = 0
         self.max_height = 0     
+        self.exposureTime = 100.0
         
         # Graphical interface
         loadUi("LEnsE_version1.ui", self)
@@ -83,7 +84,7 @@ class MainWindow(QMainWindow):
         '''
         array = self.camera.get_image()
         X, Y, W, H = self.camera.get_aoi()
-        frame = np.reshape(array,(W, H, -1))
+        frame = np.reshape(array,(H, W, -1))
         frame = cv2.resize(frame, dsize=(self.frameWidth, self.frameHeight), interpolation=cv2.INTER_CUBIC)
         image = QImage(frame, frame.shape[1],frame.shape[0], frame.shape[1], QImage.Format_Grayscale8)
         pmap = QPixmap(image)
@@ -126,7 +127,7 @@ class MainWindow(QMainWindow):
         
         self.max_width = self.camera.get_sensor_max_width()
         self.max_height = self.camera.get_sensor_max_height()
-        self.camera.set_exposure(0.9)
+        self.camera.set_exposure(self.exposureTime)
         self.cameraExposureInfo.setText(f'Exposure : {self.camera.get_exposure()} ms')
         self.camera.set_colormode(ueye.IS_CM_MONO8)
         self.camera.set_aoi(0, 0, self.max_width-1, self.max_height-1)
