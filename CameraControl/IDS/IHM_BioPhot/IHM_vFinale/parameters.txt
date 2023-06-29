@@ -1,0 +1,12 @@
+Z Displacement = 2
+Z Step = 500
+
+Camera settings :
+Exposure time = 66.0
+FPS = 18
+BlackLevel = 116
+
+Patterns loaded :
+Pattern 1 : C:/Users/TP02/Desktop/InterfaceBioPhot/MiresDMD/3 mires de période 45 pixels/Mire45pixelsdecalee_0_tiers.bmp
+Pattern 2 : C:/Users/TP02/Desktop/InterfaceBioPhot/MiresDMD/3 mires de période 21 pixels/Mire0degre21_pix_decalee_1_tiers.bmp
+Pattern 3 : MiresDMD\mires\mire 256\Mire256_pix_decalee_2_quarts.bmp

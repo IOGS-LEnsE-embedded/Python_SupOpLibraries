@@ -10,6 +10,8 @@ Laboratoire d Enseignement Experimental - Institut d Optique Graduate School
 Version : 1.0 - 2023-03-08
 """
 
+#-------------------------------------------------------------------------------------------------------
+
 from pyueye import ueye
 
 class uEye_ERROR(Exception):
@@ -60,6 +62,8 @@ def get_cam_list():
             return cams_info
     else:
         return []
+
+#-------------------------------------------------------------------------------------------------------
 
 class uEyeCamera:
     def __init__(self, cam_id=0):
@@ -296,6 +300,8 @@ class uEyeCamera:
     #     pixel_clock_list = ueye.PIXEL
     #
     #     ueye.is_PixelClock(self.h_cam, IS_PIXELCLOCK_CMD_GET_LIST, number, ueye.sizeof(number))
+
+#-------------------------------------------------------------------------------------------------------
 
 def get_bits_per_pixel(color_mode):
     """

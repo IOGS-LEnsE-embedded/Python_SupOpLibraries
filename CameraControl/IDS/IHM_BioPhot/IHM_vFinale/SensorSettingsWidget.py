@@ -7,9 +7,9 @@ import numpy as np
 
 #-------------------------------------------------------------------------------------------------------
 
-class Camera_Settings_Widget(QWidget):
+class Sensor_Settings_Widget(QWidget):
     """
-    Widget used to set our less important options.
+    Widget used to set our camera options.
 
     Args:
         QWidget (class): QWidget can be put in another widget and / or window.
@@ -19,9 +19,6 @@ class Camera_Settings_Widget(QWidget):
         Initialisation of our widget.
         """
         super().__init__()
-        self.setStyleSheet("background-color: #c55a11; border-radius: 10px; border-width: 2px;"
-                           "border-color: black; padding: 6px; font: bold 12px; color: white;"
-                           "text-align: center; border-style: solid;")
         
         group_box = QGroupBox("Sensor Settings")
 
@@ -43,9 +40,25 @@ class Camera_Settings_Widget(QWidget):
 
         main_layout = QGridLayout()
         main_layout.addWidget(group_box, 0, 0, 1, 1) # row = 0, column = 0, rowSpan = 1, columnSpan = 0 <=> QHBoxLayout or V
-
         
         self.setLayout(main_layout)
+
+    def setEnabled(self, enabled):
+        """
+        Method used to set the style sheet of the widget, if he is enable or disable.
+
+        Args:
+            enabled (bool): enable or disable.
+        """
+        super().setEnabled(enabled)
+        if enabled:
+            self.setStyleSheet("background-color: #c55a11; border-radius: 10px; border-width: 2px;"
+                           "border-color: black; padding: 6px; font: bold 12px; color: white;"
+                           "text-align: center; border-style: solid;")
+        else:
+            self.setStyleSheet("background-color: #bfbfbf; border-radius: 10px; border-width: 2px;"
+                           "border-color: black; padding: 6px; font: bold 12px; color: white;"
+                           "text-align: center; border-style: solid;")
 
 #-------------------------------------------------------------------------------------------------------
 
@@ -70,6 +83,7 @@ class Setting_Widget_Int(QWidget):
         
         self.setStyleSheet("border-style: none")
 
+        # Setting slider parameters
         self.slider = QSlider(Qt.Horizontal)
         self.slider.setMinimum(minimumValue)
         self.slider.setMaximum(maximumValue)
@@ -77,7 +91,6 @@ class Setting_Widget_Int(QWidget):
         self.selectionLabel = settingLabel
 
         layout = QGridLayout()
-
 
         # Create a line widget and place it into the grid layout
         self.line = QLineEdit(self)
@@ -92,7 +105,6 @@ class Setting_Widget_Int(QWidget):
 
         layout.addWidget(self.slider, 0, 2, 1, 4) # row = 0, column = 2, rowSpan = 1, columnSpan = 4
 
-
         self.setLayout(layout)
 
     def linetextValueChanged(self, text):
@@ -102,9 +114,14 @@ class Setting_Widget_Int(QWidget):
         Args:
             text (str): string that'll be converted in float to changed the important values.
         """
-        self.value = int(text)
-        self.labelValue.setText(self.selectionLabel + "= " + str(text))
-        self.slider.setValue(int(text))
+        # Avoiding the "0 delete" bug
+        try : self.value = int(text)
+        except : pass
+
+        try : self.labelValue.setText(self.selectionLabel + "= " + str(text))
+        except : pass
+
+        self.slider.setValue(self.value)
 
     def sliderValueChanged(self, value):
         """
@@ -206,9 +223,11 @@ class Setting_Widget_Float(QWidget):
         Args:
             text (str): string that'll be converted in float to changed the important values.
         """
-        self.value = float(text)
-        self.labelValue.setText(self.selectionLabel + str(math.floor(float(text) * 100) / 100))
-        self.setValue(float(text))
+        # Avoiding the "0 delete" bug
+        try : self.value = float(text)
+        except : pass
+        self.labelValue.setText(self.selectionLabel + str(math.floor(self.value * 100) / 100))
+        self.setValue(self.value)
     
     def setValue(self, value):
         """
@@ -226,7 +245,7 @@ class Setting_Widget_Float(QWidget):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
-    window = Camera_Settings_Widget()
+    window = Sensor_Settings_Widget()
     window.show()
 
     sys.exit(app.exec_())

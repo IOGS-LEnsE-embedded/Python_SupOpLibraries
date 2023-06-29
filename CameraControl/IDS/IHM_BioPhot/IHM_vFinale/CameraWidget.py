@@ -39,8 +39,6 @@ class Camera_Widget(QWidget):
                            "border-color: black; border-width: 2px; font: bold 12px; padding: 20px;"
                            "border-style: solid;")
 
-
-
         # Camera
         self.camera = None
         self.max_width = 0
@@ -57,7 +55,6 @@ class Camera_Widget(QWidget):
         
         # Center the camera widget
         self.cameraDisplay.setAlignment(Qt.AlignCenter)
-
 
         # Create a self.layout and add widgets
         self.layout = QGridLayout()
@@ -266,6 +263,22 @@ class Camera_Widget(QWidget):
             self.timerUpdate.setInterval(int(self.camera.get_frame_rate()))
             self.timerUpdate.start()
 
+    def setColor(self, color):
+        """
+        Method used to fast setup the color of the widget.
+
+        Args:
+            color (str): tell if it needs to be blue or orange.
+        """
+        if color == "blue":
+            self.setStyleSheet("background-color: #4472c4; border-radius: 10px;"
+                           "border-color: black; border-width: 2px; font: bold 12px; padding: 20px;"
+                           "border-style: solid;")
+        elif color == "orange":
+            self.setStyleSheet("background-color: #c55a11; border-radius: 10px;"
+                           "border-color: black; border-width: 2px; font: bold 12px; padding: 20px;"
+                           "border-style: solid;")
+
 #-----------------------------------------------------------------------------------------------
 
 class Setting_Widget_Float(QWidget):
@@ -367,6 +380,7 @@ class MyWindow(QMainWindow):
 
 #-----------------------------------------------------------------------------------------------
 
+# Launching as main for tests
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     main = MyWindow()

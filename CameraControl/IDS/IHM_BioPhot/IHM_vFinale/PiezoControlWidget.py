@@ -9,7 +9,7 @@ import numpy as np
 
 class Piezo_Control_Widget(QWidget):
     """
-    Widget used to set our less important options.
+    Widget used to control the piezo.
 
     Args:
         QWidget (class): QWidget can be put in another widget and / or window.
@@ -19,43 +19,65 @@ class Piezo_Control_Widget(QWidget):
         Initialisation of our widget.
         """
         super().__init__()
-        self.setStyleSheet("background-color: #c55a11; border-radius: 10px; border-width: 2px;"
-                           "border-color: black; padding: 6px; font: bold 12px; color: white;"
-                           "text-align: center; border-style: solid;")
         
-        group_box = QGroupBox("Piezo Control")
-
+        self.value = None
         self.setWindowTitle("Piezo Control")
+        group_box = QGroupBox("Piezo Control")
 
         # Creating the main layout
         layout = QGridLayout()
         
         # Creating and adding our settings
-        self.ZAxis = Setting_Widget_Float(settingLabel = " Z Axis ")
-        self.FineZ = Setting_Widget_Int(settingLabel = " Fine Z ")
+        self.ZAxis = Setting_Widget_Int(settingLabel = " Z Axis (um) ", minimumValue = 0, maximumValue = 3, initialisationValue = 1)
+        self.ZAxis.slider.valueChanged.connect(lambda : self.setFinalValueLabel())
 
-        label = QLabel("Final Value")
+        self.FineZ = Setting_Widget_Int(settingLabel = " Fine Z (nm) ", minimumValue = 0, maximumValue = 999, initialisationValue = 500)
+        self.FineZ.slider.valueChanged.connect(lambda : self.setFinalValueLabel())
+
+        label = QLabel(" Final Value (um) ")
         label.setStyleSheet("border-style: none")
 
-        self.finalValueLine =  QLineEdit()
-        self.finalValueLine.setStyleSheet("background-color: white; padding: 4px; color: black; border-style: solid; border-width: 1px;")
-
+        self.finalValueLabel = QLabel()
+        self.finalValueLabel.setAlignment(Qt.AlignCenter)
+        self.finalValueLabel.setStyleSheet("background-color: white; padding: 4px; color: black; border-style: solid; border-width: 1px;")
+        self.setFinalValueLabel()
 
         layout.addWidget(self.ZAxis, 0, 0, 1, 3) # row = 0, column = 0, rowSpan = 1, columnSpan = 3
         layout.addWidget(self.FineZ, 1, 0, 1, 3) # row = 1, column = 0, rowSpan = 1, columnSpan = 3
 
         layout.addWidget(label, 2, 1, 1, 1) # row = 2, column = 1, rowSpan = 1, columnSpan = 1
-        layout.addWidget(self.finalValueLine, 2, 2, 1, 1) # row = 2, column = 2, rowSpan = 1, columnSpan = 1
-
-
+        layout.addWidget(self.finalValueLabel, 2, 2, 1, 1) # row = 2, column = 2, rowSpan = 1, columnSpan = 1
 
         group_box.setLayout(layout)
 
         main_layout = QGridLayout()
         main_layout.addWidget(group_box, 0, 0, 1, 1) # row = 0, column = 0, rowSpan = 1, columnSpan = 0 <=> QHBoxLayout or V
-
         
         self.setLayout(main_layout)
+
+    def setEnabled(self, enabled):
+        """
+        Method used to set the style sheet of the widget, if he is enable or disable.
+
+        Args:
+            enabled (bool): enable or disable.
+        """
+        super().setEnabled(enabled)
+        if enabled:
+            self.setStyleSheet("background-color: #c55a11; border-radius: 10px; border-width: 2px;"
+                           "border-color: black; padding: 6px; font: bold 12px; color: white;"
+                           "text-align: center; border-style: solid;")
+        else:
+            self.setStyleSheet("background-color: #bfbfbf; border-radius: 10px; border-width: 2px;"
+                           "border-color: black; padding: 6px; font: bold 12px; color: white;"
+                           "text-align: center; border-style: solid;")
+
+    def setFinalValueLabel(self):
+        """
+        Method used to est the value of the label and the general value of the piezo.
+        """
+        self.value = round(float(self.FineZ.getValue()*10**(-3)) + self.ZAxis.getValue(), 3)
+        self.finalValueLabel.setText(str(self.value))
 
 #-------------------------------------------------------------------------------------------------------
 
@@ -66,7 +88,7 @@ class Setting_Widget_Int(QWidget):
     Args:
         QWidget (class): QWidget can be put in another widget and / or window.
     """
-    def __init__(self, settingLabel, minimumValue = 0, maximumValue = 100, initialisationValue = 50):
+    def __init__(self, settingLabel, minimumValue = 0, maximumValue = 500, initialisationValue = 250):
         """
         Initialisation of our setting widget.
 
@@ -79,15 +101,18 @@ class Setting_Widget_Int(QWidget):
         super().__init__()
         
         self.setStyleSheet("border-style: none")
+        self.minimumValue = minimumValue
+        self.maximumValue = maximumValue
+        self.initialisationValue = initialisationValue
 
+        # Setting the slider
         self.slider = QSlider(Qt.Horizontal)
-        self.slider.setMinimum(minimumValue)
-        self.slider.setMaximum(maximumValue)
-        self.slider.setValue(initialisationValue)
+        self.slider.setMinimum(self.minimumValue)
+        self.slider.setMaximum(self.maximumValue)
+        self.slider.setValue(self.initialisationValue)
         self.selectionLabel = settingLabel
 
         layout = QGridLayout()
-
 
         # Create a line widget and place it into the grid layout
         self.line = QLineEdit(self)
@@ -102,7 +127,6 @@ class Setting_Widget_Int(QWidget):
 
         layout.addWidget(self.slider, 0, 2, 1, 4) # row = 0, column = 2, rowSpan = 1, columnSpan = 4
 
-
         self.setLayout(layout)
 
     def linetextValueChanged(self, text):
@@ -112,9 +136,14 @@ class Setting_Widget_Int(QWidget):
         Args:
             text (str): string that'll be converted in float to changed the important values.
         """
-        self.value = int(text)
-        self.labelValue.setText(self.selectionLabel + "= " + str(text))
-        self.slider.setValue(int(text))
+        # Avoiding the "0 delete" method
+        try : self.value = int(text)
+        except : pass
+
+        try : self.labelValue.setText(self.selectionLabel + "= " + str(text))
+        except : pass
+
+        self.slider.setValue(self.value)
 
     def sliderValueChanged(self, value):
         """
@@ -158,7 +187,7 @@ class Setting_Widget_Float(QWidget):
     Args:
         QWidget (class): QWidget can be put in another widget and / or window.
     """
-    def __init__(self, settingLabel, floatListToSelect = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]):
+    def __init__(self, settingLabel, floatListToSelect = [0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0]):
         """
         Initialiszation of the widget.
 
@@ -194,6 +223,7 @@ class Setting_Widget_Float(QWidget):
         self.slider = QSlider(Qt.Horizontal)
         self.slider.setRange(0, len(self.floatListToSelect) - 1)
         self.slider.valueChanged.connect(self.sliderValueChanged)
+        self.slider.setValue((len(self.floatListToSelect) - 1)//2)
 
         layout.addWidget(self.slider, 0, 2, 1, 4) # row = 0, column = 2, rowSpan = 1, columnSpan = 4
         
@@ -216,9 +246,12 @@ class Setting_Widget_Float(QWidget):
         Args:
             text (str): string that'll be converted in float to changed the important values.
         """
-        self.value = float(text)
-        self.labelValue.setText(self.selectionLabel + str(math.floor(float(text) * 100) / 100))
-        self.setValue(float(text))
+        # Avoiding the "0 delete" bug
+        try : self.value = float(text)
+        except : pass
+        
+        self.labelValue.setText(self.selectionLabel + str(math.floor(self.value * 100) / 100))
+        self.setValue(self.value)
     
     def setValue(self, value):
         """

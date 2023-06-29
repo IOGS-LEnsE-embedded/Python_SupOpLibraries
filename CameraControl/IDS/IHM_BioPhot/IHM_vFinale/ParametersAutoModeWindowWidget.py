@@ -1,7 +1,11 @@
 # Libraries to import
 import sys
-from PyQt5.QtWidgets import QApplication, QGridLayout, QWidget, QPushButton, QLabel, QLineEdit, QPushButton
+from PyQt5.QtWidgets import QApplication, QGridLayout, QWidget, QPushButton, QLabel, QLineEdit, QPushButton, QFileDialog
+from PyQt5.QtGui import QIcon
 
+#-------------------------------------------------------------------------------------------------------
+
+# Colors
 """
 Colors :    Green  : #c5e0b4
             Blue   : #4472c4
@@ -11,25 +15,32 @@ Colors :    Green  : #c5e0b4
             Grey2  : #bfbfbf
 """
 
+#-------------------------------------------------------------------------------------------------------
 
 class Parameters_AutoMode_Window(QWidget):
     """
-    Main Widget of our Main Window.
+    Widget used to parameter our AutoMode.
 
     Args:
         QWidget (class): QWidget can be put in another widget and / or window.
     """
     def __init__(self):
         """
-        Initialisation of the main Widget.
+        Initialisation of the Widget.
         """
         super().__init__()
+        
+        self.path = None
+
+        # Setting the style sheet
         self.setStyleSheet("background-color: #bfbfbf; border-radius: 10px; border-width: 1px;"
                            "border-color: black; padding: 6px; font: bold 12px; color: white;"
                            "text-align: center; border-style: solid;")
 
         self.setWindowTitle("Parameters AutoMode Window")
+        self.setWindowIcon(QIcon("IOGSLogo.jpg"))
 
+        # Creating and adding widgets into our layout
         layout = QGridLayout()
 
         directoryLabel = QLabel("Directory")
@@ -37,16 +48,14 @@ class Parameters_AutoMode_Window(QWidget):
 
         self.directoryPushButton = QPushButton("Directory")
         self.directoryPushButton.setStyleSheet("background: #c5e0b4; color: black;")
-        self.directoryPushButton.clicked.connect(lambda : self.directory())
 
-
-        zDisplacementLabel = QLabel("Z displacement")
+        zDisplacementLabel = QLabel("Z displacement (um)")
         zDisplacementLabel.setStyleSheet("border-style: none;")
 
         self.zDisplacementLine = QLineEdit()
         self.zDisplacementLine.setStyleSheet("background: white; color: black;")
 
-        zStepLabel = QLabel("Z Step")
+        zStepLabel = QLabel("Z Step (nm)")
         zStepLabel.setStyleSheet("border-style: none;")
 
         self.zStepLine = QLineEdit()
@@ -54,9 +63,6 @@ class Parameters_AutoMode_Window(QWidget):
 
         self.saveParametersPushButton = QPushButton("Save Parameters")
         self.saveParametersPushButton.setStyleSheet("background: #c5e0b4; color: black;")
-        self.saveParametersPushButton.clicked.connect(lambda : self.saveParameters())
-
-        
 
         layout.addWidget(directoryLabel, 0, 0, 1, 2) # row = 0, column = 0, rowSpan = 1, columnSpan = 2
         layout.addWidget(self.directoryPushButton, 0, 2, 1, 2) # row = 0, column = 2, rowSpan = 1, columnSpan = 2
@@ -68,13 +74,28 @@ class Parameters_AutoMode_Window(QWidget):
 
         self.setLayout(layout)
 
-    def directory(self):
-        print("Directory push button : clicked.")
+    def setEnabled(self, enabled):
+        """
+        Method used to set the style sheet of the widget, if he is enable or disable.
 
-    def saveParameters(self):
-        print("Save parameters push button : clicked.")
-
-
+        Args:
+            enabled (bool): enable or disable.
+        """
+        super().setEnabled(enabled)
+        if enabled:
+            self.setStyleSheet("background-color: #4472c4; border-radius: 10px; border-width: 1px;"
+                           "border-color: black; padding: 6px; font: bold 12px; color: white;"
+                           "text-align: center; border-style: solid;")
+            self.directoryPushButton.setStyleSheet("background: #7fadff; border-style: solid; border-width: 1px; font: bold; color: black")
+            self.saveParametersPushButton.setStyleSheet("background: #7fadff; border-style: solid; border-width: 1px; font: bold; color: black")
+        
+        else:
+            self.setStyleSheet("background-color: #bfbfbf; border-radius: 10px; border-width: 1px;"
+                           "border-color: black; padding: 6px; font: bold 12px; color: white;"
+                           "text-align: center; border-style: solid;")
+            self.directoryPushButton.setStyleSheet("background: white; border-style: solid; border-width: 1px; font: bold; color: black")
+            self.saveParametersPushButton.setStyleSheet("background: white; border-style: solid; border-width: 1px; font: bold; color: black")
+            
 
 #-------------------------------------------------------------------------------------------------------
 
@@ -82,7 +103,7 @@ class Parameters_AutoMode_Window(QWidget):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
-    window = Parameters_AutoMode_Window(1)
+    window = Parameters_AutoMode_Window()
     window.show()
 
     sys.exit(app.exec_())
