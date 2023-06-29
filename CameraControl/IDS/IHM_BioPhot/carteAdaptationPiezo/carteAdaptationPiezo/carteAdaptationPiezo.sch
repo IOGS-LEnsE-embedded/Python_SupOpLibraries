@@ -1,0 +1,238 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Device:R R1
+U 1 1 649DEB9B
+P 1900 3000
+F 0 "R1" H 1970 3046 50  0000 L CNN
+F 1 "56k" H 1970 2955 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0309_L9.0mm_D3.2mm_P12.70mm_Horizontal" V 1830 3000 50  0001 C CNN
+F 3 "~" H 1900 3000 50  0001 C CNN
+	1    1900 3000
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R2
+U 1 1 649DF027
+P 2600 2700
+F 0 "R2" V 2393 2700 50  0000 C CNN
+F 1 "100k" V 2484 2700 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0309_L9.0mm_D3.2mm_P12.70mm_Horizontal" V 2530 2700 50  0001 C CNN
+F 3 "~" H 2600 2700 50  0001 C CNN
+	1    2600 2700
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R_POT_TRIM RV1
+U 1 1 649DF777
+P 3050 2700
+F 0 "RV1" V 2843 2700 50  0000 C CNN
+F 1 "47k Multi" V 2934 2700 50  0000 C CNN
+F 2 "Potentiometer_THT:Potentiometer_Bourns_3296W_Vertical" H 3050 2700 50  0001 C CNN
+F 3 "~" H 3050 2700 50  0001 C CNN
+	1    3050 2700
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:C C1
+U 1 1 649DFE7E
+P 4850 2100
+F 0 "C1" H 4965 2146 50  0000 L CNN
+F 1 "100n" H 4965 2055 50  0000 L CNN
+F 2 "Capacitor_THT:C_Disc_D7.5mm_W5.0mm_P7.50mm" H 4888 1950 50  0001 C CNN
+F 3 "~" H 4850 2100 50  0001 C CNN
+	1    4850 2100
+	1    0    0    -1  
+$EndComp
+$Comp
+L Amplifier_Operational:LM358 U1
+U 1 1 649E1CCE
+P 2350 2300
+F 0 "U1" H 2350 2667 50  0000 C CNN
+F 1 "LM358" H 2350 2576 50  0000 C CNN
+F 2 "Package_DIP:DIP-8_W7.62mm_LongPads" H 2350 2300 50  0001 C CNN
+F 3 "http://www.ti.com/lit/ds/symlink/lm2904-n.pdf" H 2350 2300 50  0001 C CNN
+	1    2350 2300
+	1    0    0    -1  
+$EndComp
+$Comp
+L Amplifier_Operational:LM358 U1
+U 3 1 649E2AEA
+P 5350 2150
+F 0 "U1" H 5308 2196 50  0000 L CNN
+F 1 "LM358" H 5308 2105 50  0000 L CNN
+F 2 "Package_DIP:DIP-8_W7.62mm_LongPads" H 5350 2150 50  0001 C CNN
+F 3 "http://www.ti.com/lit/ds/symlink/lm2904-n.pdf" H 5350 2150 50  0001 C CNN
+	3    5350 2150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x02 J3
+U 1 1 649E8DAA
+P 4100 2000
+F 0 "J3" H 4018 1675 50  0000 C CNN
+F 1 "POWER_IN_12V" H 4018 1766 50  0000 C CNN
+F 2 "TerminalBlock:TerminalBlock_bornier-2_P5.08mm" H 4100 2000 50  0001 C CNN
+F 3 "~" H 4100 2000 50  0001 C CNN
+	1    4100 2000
+	-1   0    0    1   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x02 J2
+U 1 1 649E9B7F
+P 3650 2300
+F 0 "J2" H 3730 2292 50  0000 L CNN
+F 1 "Output" H 3730 2201 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Horizontal" H 3650 2300 50  0001 C CNN
+F 3 "~" H 3650 2300 50  0001 C CNN
+	1    3650 2300
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR04
+U 1 1 649EA84F
+P 4950 2600
+F 0 "#PWR04" H 4950 2350 50  0001 C CNN
+F 1 "GND" H 4955 2427 50  0000 C CNN
+F 2 "" H 4950 2600 50  0001 C CNN
+F 3 "" H 4950 2600 50  0001 C CNN
+	1    4950 2600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4950 2600 4950 2550
+Wire Wire Line
+	4950 2550 5250 2550
+Wire Wire Line
+	5250 2550 5250 2450
+Wire Wire Line
+	4950 2550 4850 2550
+Wire Wire Line
+	4850 2550 4850 2250
+Connection ~ 4950 2550
+Wire Wire Line
+	4850 1750 5250 1750
+Wire Wire Line
+	5250 1750 5250 1850
+Wire Wire Line
+	4850 1750 4850 1950
+Wire Wire Line
+	4300 1900 4650 1900
+Wire Wire Line
+	4650 1900 4650 1750
+Wire Wire Line
+	4650 1750 4850 1750
+Connection ~ 4850 1750
+Wire Wire Line
+	4850 2550 4650 2550
+Wire Wire Line
+	4650 2550 4650 2000
+Wire Wire Line
+	4650 2000 4300 2000
+Connection ~ 4850 2550
+$Comp
+L power:GND #PWR03
+U 1 1 649EC455
+P 3450 2550
+F 0 "#PWR03" H 3450 2300 50  0001 C CNN
+F 1 "GND" H 3455 2377 50  0000 C CNN
+F 2 "" H 3450 2550 50  0001 C CNN
+F 3 "" H 3450 2550 50  0001 C CNN
+	1    3450 2550
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR02
+U 1 1 649EC7AA
+P 1900 3250
+F 0 "#PWR02" H 1900 3000 50  0001 C CNN
+F 1 "GND" H 1905 3077 50  0000 C CNN
+F 2 "" H 1900 3250 50  0001 C CNN
+F 3 "" H 1900 3250 50  0001 C CNN
+	1    1900 3250
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR01
+U 1 1 649ED3F1
+P 1600 2400
+F 0 "#PWR01" H 1600 2150 50  0001 C CNN
+F 1 "GND" H 1605 2227 50  0000 C CNN
+F 2 "" H 1600 2400 50  0001 C CNN
+F 3 "" H 1600 2400 50  0001 C CNN
+	1    1600 2400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1600 2300 1600 2400
+Wire Wire Line
+	1900 2850 1900 2700
+Wire Wire Line
+	1900 2400 2050 2400
+Wire Wire Line
+	2450 2700 1900 2700
+Connection ~ 1900 2700
+Wire Wire Line
+	1900 2700 1900 2400
+Wire Wire Line
+	1900 3250 1900 3150
+Wire Wire Line
+	2750 2700 2850 2700
+Wire Wire Line
+	3200 2700 3300 2700
+Wire Wire Line
+	3300 2700 3300 2300
+Wire Wire Line
+	3300 2300 2650 2300
+Wire Wire Line
+	3300 2300 3450 2300
+Connection ~ 3300 2300
+Wire Wire Line
+	3050 2850 3050 2950
+Wire Wire Line
+	3050 2950 2850 2950
+Wire Wire Line
+	2850 2950 2850 2700
+Connection ~ 2850 2700
+Wire Wire Line
+	2850 2700 2900 2700
+$Comp
+L Connector_Generic:Conn_01x03 J1
+U 1 1 649DC8F3
+P 1200 2300
+F 0 "J1" H 1118 1975 50  0000 C CNN
+F 1 "Nucleo" H 1118 2066 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal" H 1200 2300 50  0001 C CNN
+F 3 "~" H 1200 2300 50  0001 C CNN
+	1    1200 2300
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	3450 2550 3450 2400
+Wire Wire Line
+	1400 2200 2050 2200
+Wire Wire Line
+	1400 2300 1600 2300
+Text GLabel 1400 2500 3    50   Input ~ 0
+12V
+Text GLabel 4650 1700 1    50   Input ~ 0
+12V
+Wire Wire Line
+	4650 1750 4650 1700
+Connection ~ 4650 1750
+Wire Wire Line
+	1400 2500 1400 2400
+$EndSCHEMATC
